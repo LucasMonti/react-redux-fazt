@@ -1,25 +1,44 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-  value: 0,
-}
+const initialState = [
+  {
+    id: "1",
+    title: 'task 1',
+    description: 'tarea 1 description',
+    completed: false
+  },
+  {
+    id: "2",
+    title: 'task 2',
+    description: 'tarea 2 description',
+    completed: false
+  }
+]
 
 export const taskSlice = createSlice({
   name: 'counter',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    addTask: (state, action)=> {
+      state.push(action.payload)
     },
-    decrement: (state) => {
-      state.value -= 1
+    deleteTask: (state, action)=> {
+      return state.filter(task=> task.id !==action.payload)
     },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload
-    },
+    updateTask: (state, action)=> {
+      
+      const {id, title, description} = action.payload
+      console.log(id);
+      const foundTask = state.find(task => task.id === id)
+      console.log(foundTask);
+      if(foundTask) {
+        foundTask.title = title;
+        foundTask.description = description
+      }
+    }
   },
 })
 
-export const { increment, decrement, incrementByAmount } = taskSlice.actions
+export const { addTask, deleteTask, updateTask } = taskSlice.actions
 
 export default taskSlice.reducer
